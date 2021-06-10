@@ -31,8 +31,8 @@ const Todo = (props) => {
 					value={newName}
 					onChange={handleChange}
 				/>{' '}
-				<input id={props.id} className='todo-text' type='text' />
 			</div>
+            
 			<div className='btn-group'>
 				<button
 					type='button'
