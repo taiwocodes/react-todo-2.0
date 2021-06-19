@@ -4,87 +4,52 @@
 // each tiem in todo list to have 2 buttons: done & edit
 // when done button is clicked, item should fade from list
 // when edit is clicked, item gets inserted back into form
+// register page registers user
+// login page logs user in
+// logout logs user out
 
-import React, { useState } from 'react';
-import { nanoid } from 'nanoid';
-import Form from './components/form';
-import Todo from './components/todo';
-import './style/index.css';
 
-const App = (props) => {
-	const [tasks, setTasks] = useState(props.tasks);
-
-	const toggleTaskCompleted = (id) => {
-		const updatedTasks = tasks.map((task) => {
-			// if this task has the same ID as the edited task
-			if (id === task.id) {
-				// use object spread to make a new object
-				return { ...task, completed: !task.completed };
-			}
-			return task;
-		});
-		setTasks(updatedTasks);
-	};
-
-	const deleteTask = (id) => {
-		const remainingTasks = tasks.filter((task) => id !== task.id);
-		setTasks(remainingTasks);
-	};
-
-  const editTask = (id, newName) => {
-		const editedTaskList = tasks.map((task) => {
-			// if the task has the same ID as the edited task
-			if (id === task.id) {
-				return { ...task, name: newName };
-			}
-			return task;
-		});
-		setTasks(editedTaskList);
-	};
-
-	const taskList = tasks.map(task => (
-		<Todo
-			id={task.id}
-			name={task.name}
-			completed={task.completed}
-			key={task.id}
-			toggleTaskCompleted={toggleTaskCompleted}
-			deleteTask={deleteTask}
-			editTask={editTask}
-		/>
-   )
-  );
-
-	const addTask = (name) => {
-		const newTask = { id: 'todo-' + nanoid(), name: name, completed: false };
-		setTasks([...tasks, newTask]);
-	};
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import AppState, { AppContext } from './components/appstate';
+import TodoApp from './components/todo-app';
+import { useContext, useEffect } from 'react';
+import Register from './pages/Register';
+import Login from './pages/Login';
+import Navbar from './components/navbar';
 
 
 
-	//to count number of tasks left
-	const tasksNoun = taskList.length !== 1 ? 'tasks' : 'task';
-	const headingText = `${taskList.length} ${tasksNoun} remaining`;
+// REACT HOOKS
+
+function App() {
+	const context = useContext(AppContext);
+	console.log(context);
+
+	useEffect(() => {}, []);
 
 	return (
-		<>
-     <div className="todoapp stack-large">
+		<BrowserRouter>
+			<AppState>
+				<Navbar />
 
-     <Form addTask={addTask} />
+				<Switch>
+					<Route path='/login'>
+						<Login />
+					</Route>
+					<Route path='/register'>
+						<Register />
+					</Route>
+					<Route path='/todo-app'>
+						<TodoApp />
+					</Route>
+					<Route>
+						<Register />
+					</Route>
+				</Switch>
 
-			<h2 id='list-heading'>{headingText}</h2>
-
-      <ul
-  className="todo-list stack-large stack-exception"
-  aria-labelledby="list-heading"
->
-  {taskList}
-</ul>
-
-</div>
-
-		</>
+			</AppState>
+		</BrowserRouter>
 	);
-};
+}
 
 export default App;

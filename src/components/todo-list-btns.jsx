@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Todo = (props) => {
+const TodoListBtns = (props) => {
 
 	const [isEditing, setEditing] = useState(false);
 	const [newName, setNewName] = useState('');
@@ -15,7 +15,7 @@ const Todo = (props) => {
         setNewName("");
         setEditing(false);
       }
-
+	  
 
       //editing the input
 	const editingTemplate = (
@@ -81,4 +81,4 @@ const Todo = (props) => {
 	return <li className='todo'>{isEditing ? editingTemplate : viewTemplate}</li>;
 };
 
-export default Todo;
+export default TodoListBtns;
